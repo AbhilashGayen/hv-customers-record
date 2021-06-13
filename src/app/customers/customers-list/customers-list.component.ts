@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { DATA } from 'src/assets/DATA';
 import { Customer } from '../customer.model';
 import { CustomersFilterComponent } from '../customers-filter/customers-filter.component';
 import { CustomersModalComponent } from '../customers-modal/customers-modal.component';
