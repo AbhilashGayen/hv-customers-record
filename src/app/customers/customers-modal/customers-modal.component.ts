@@ -18,7 +18,7 @@ export class CustomersModalComponent implements OnInit {
     public dialogRef: MatDialogRef<CustomersModalComponent>,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
-    this.customer = data?.customer || ({} as Customer);
+    this.customer = data?.customer || {};
   }
 
   get emailsArrayControl() {
@@ -27,7 +27,7 @@ export class CustomersModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-      customerId: this.customer.customerId || '',
+      customerId: this.customer._id,
       name: this.customer.name,
       location: this.customer.location,
       email: this.formBuilder.array([this.customer.email]),
@@ -46,19 +46,35 @@ export class CustomersModalComponent implements OnInit {
   }
 
   save() {
-    this.svc.addCustomer(this.formGroup.value);
-    this.dialogRef.close(this.formGroup.value);
+    this.svc.createCustomer(this.formGroup.value).subscribe(
+      (res) => {
+        console.log('Customer successfully created!');
+        this.dialogRef.close(this.formGroup.value);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   edit() {
-    this.svc.updateCustomer(this.formGroup.value);
-    this.dialogRef.close(this.formGroup.value);
+    const id = this.formGroup.value.customerId;
+    this.svc.updateCustomer(id, this.formGroup.value).subscribe(
+      (res) => {
+        console.log('Content updated successfully!');
+        this.dialogRef.close(this.formGroup.value);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   delete() {
     const id = this.formGroup.value.customerId;
-    this.svc.deletePost(id);
-    this.dialogRef.close();
+    this.svc.deleteCustomer(id).subscribe(() => {
+      this.dialogRef.close();
+    });
   }
 }
 
