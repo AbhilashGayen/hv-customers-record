@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-const Customer = require("./models/customer");
+const customerRoutes = require("./routes/customers");
 
 const app = express();
 
@@ -33,71 +33,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/api/customers", (req, res, next) => {
-  const customer = new Customer({
-    name: req.body.name,
-    location: req.body.location,
-    phone: req.body.phone,
-    contactPerson: req.body.contactPerson,
-    contactRole: req.body.contactRole,
-    internalComment: req.body.internalComment,
-    internalRepresentative: req.body.internalRepresentative,
-    priority: req.body.priority,
-    isMailSent: req.body.isMailSent,
-  });
-  customer.save().then((result) => {
-    res.status(201).json({
-      message: "Customes addded!",
-      customerId: result._id,
-    });
-  });
-});
-
-app.get("/api/customers", (req, res, next) => {
-  Customer.find().then((data) => {
-    res.status(200).json({
-      message: "Customers fetched succeddfully",
-      customers: data,
-    });
-  });
-});
-
-app.delete("/api/customers/:id", (req, res, next) => {
-  Customer.deleteOne({ _id: req.params.id }).then((result) => {
-    res.status(200).json({
-      message: "Customes deleted!",
-    });
-  });
-});
-
-app.put("/api/customers/:id", (req, res, next) => {
-  const customer = new Customer({
-    _id: req.params.id,
-    name: req.body.name,
-    location: req.body.location,
-    phone: req.body.phone,
-    contactPerson: req.body.contactPerson,
-    contactRole: req.body.contactRole,
-    internalComment: req.body.internalComment,
-    internalRepresentative: req.body.internalRepresentative,
-    priority: req.body.priority,
-    isMailSent: req.body.isMailSent,
-  });
-  Customer.updateOne({ _id: req.params.id }, customer)
-    .then((result) => {
-      if (result.n > 0) {
-        res
-          .status(200)
-          .json({ message: "Update Successful!", customer: customer });
-      } else {
-        res.status(401).json({ message: "Not Authorized!" });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: "Couldn't Update Customer!",
-      });
-    });
-});
+app.use("/api/customers", customerRoutes);
 
 module.exports = app;

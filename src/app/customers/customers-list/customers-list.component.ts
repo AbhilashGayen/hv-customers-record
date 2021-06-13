@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Customer } from '../customer.model';
 import { CustomersFilterComponent } from '../customers-filter/customers-filter.component';
 import { CustomersModalComponent } from '../customers-modal/customers-modal.component';
@@ -12,10 +12,9 @@ import { CustomersService } from '../customers.service';
   templateUrl: './customers-list.component.html',
   styleUrls: ['./customers-list.component.scss'],
 })
-export class CustomersListComponent implements OnInit, OnDestroy {
+export class CustomersListComponent implements OnInit {
   formGroup: FormGroup;
   customersData: Customer[];
-  private customersSub: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,21 +24,16 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     this.formGroup = CustomersFilterComponent.createFormGroup(this.formBuilder);
   }
 
-  ngOnInit() {
-    this.svc.getCustomers();
-    this.customersSub = this.svc
-      .getCusotmerUpdateListner()
-      .subscribe((customers: Customer[]) => {
-        this.customersData = customers;
-      });
+  get customers() {
+    return;
   }
-
-  ngOnDestroy() {
-    this.customersSub.unsubscribe();
+  ngOnInit() {
+    this.svc.getCustomers().subscribe((response) => {
+      this.customersData = response as Customer[];
+    });
   }
 
   openDialog(customer: Customer = {}) {
-    console.log(customer);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -47,7 +41,7 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     if (customer) {
       dialogConfig.data = {
         customer: {
-          customerId: customer.customerId,
+          _id: customer._id,
           name: customer.name,
           location: customer.location,
           email: customer.email,
@@ -67,8 +61,10 @@ export class CustomersListComponent implements OnInit, OnDestroy {
       dialogConfig
     );
 
-    dialogRef
-      .afterClosed()
-      .subscribe((data) => console.log('Dialog output:', data));
+    dialogRef.afterClosed().subscribe((data) => {
+      this.svc.getCustomers().subscribe((response) => {
+        this.customersData = response as Customer[];
+      });
+    });
   }
 }

@@ -1,7 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Customer } from './customer.model';
 
 @Injectable({
@@ -11,75 +15,47 @@ export class CustomersService {
   private customers: Customer[] = [];
   private customersUpdated = new Subject<Customer[]>();
 
+  readonly baseUri = 'http://localhost:3000/api/customers';
+  headers = new HttpHeaders().set('Content-Type', 'application/json');
+
   constructor(private http: HttpClient) {}
 
   getCustomers() {
-    this.http
-      .get<{ message: string; customers: any[] }>(
-        'http://localhost:3000/api/customers'
-      )
-      .pipe(
-        map((customerData) => {
-          return customerData.customers.map((customer) => {
-            return {
-              customerId: customer._id,
-              name: customer.name,
-              location: customer.location,
-              phone: customer.phone,
-              contactPerson: customer.contactPerson,
-              contactRole: customer.contactRole,
-              internalComment: customer.internalComment,
-              internalRepresentative: customer.internalRepresentative,
-              priority: customer.priority,
-              isMailSent: customer.isMailSent,
-            };
-          });
-        })
-      )
-      .subscribe((transformedCustomers) => {
-        this.customers = transformedCustomers;
-        this.customersUpdated.next([...this.customers]);
-      });
+    return this.http.get<Customer[]>(`${this.baseUri}`);
   }
 
-  getCusotmerUpdateListner() {
-    return this.customersUpdated.asObservable();
+  getCustomer(id: string) {
+    return this.http.get<Customer>(`${this.baseUri}/${id}`);
   }
 
-  addCustomer(customer: Customer) {
-    this.http
-      .post<{ message: string; customerId: string }>(
-        'http://localhost:3000/api/customers',
-        customer
-      )
-      .subscribe((response) => {
-        const customerId = response.customerId;
-        customer.customerId = customerId;
-        this.customers.push(customer);
-        this.customersUpdated.next([...this.customers]);
-      });
+  createCustomer(data: any): Observable<any> {
+    let url = `${this.baseUri}/create`;
+    return this.http.post(url, data).pipe(catchError(this.errorMgmt));
   }
 
-  updateCustomer(customer: Customer) {
-    this.http
-      .put<{ message: string; customer: any }>(
-        'http://localhost:3000/api/customers/' + customer.customerId,
-        customer
-      )
-      .subscribe((response) => {
-        this.customersUpdated.next([...this.customers]);
-      });
+  updateCustomer(id: string, data: Customer): Observable<any> {
+    let url = `${this.baseUri}/update/${id}`;
+    return this.http
+      .put(url, data, { headers: this.headers })
+      .pipe(catchError(this.errorMgmt));
   }
 
-  deletePost(customerId: string) {
-    this.http
-      .delete('http://localhost:3000/api/customers/' + customerId)
-      .subscribe(() => {
-        const updatedCustomers = this.customers.filter(
-          (customer) => customer.customerId !== customerId
-        );
-        this.customers = updatedCustomers;
-        this.customersUpdated.next([...this.customers]);
-      });
+  deleteCustomer(id: string): Observable<any> {
+    let url = `${this.baseUri}/delete/${id}`;
+    return this.http.delete(url).pipe(catchError(this.errorMgmt));
+  }
+
+  // Error handling
+  errorMgmt(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Get client-side error
+      errorMessage = error.error.message;
+    } else {
+      // Get server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log(errorMessage);
+    return throwError(errorMessage);
   }
 }
