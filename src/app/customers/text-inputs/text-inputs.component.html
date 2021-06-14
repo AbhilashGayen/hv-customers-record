@@ -1,0 +1,6 @@
+<ng-container
+  *ngFor="let formGroup of inputFormArray.controls; let i = index"
+  [formGroup]="formGroup"
+>
+  <input type="text" formControlName="value" />
+</ng-container>

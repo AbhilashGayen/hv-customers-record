@@ -4,6 +4,8 @@
       <app-customers-filter [formGroup]="formGroup"></app-customers-filter>
       <hr />
       <button type="button" (click)="openDialog()">Launch modal</button>
+      <hr/>
+      <app-excel-import></app-excel-import>
     </div>
     <div class="col-10">
       <table class="table table-striped table-hover">
@@ -43,7 +45,11 @@
                 {{ email }}
               </div>
             </td>
-            <td>{{ customer.phone }}</td>
+            <td>
+              <div class="text-truncate" *ngFor="let phone of customer.phone">
+                {{ phone }}
+              </div>
+            </td>
             <td>{{ customer.contactPerson }}</td>
             <td>
               <i

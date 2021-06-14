@@ -7,7 +7,7 @@ const app = express();
 
 mongoose
   .connect(
-    "mongodb+srv://AbhilashGayen:JmRvUhtO63q2hm1M@cluster0.vqlxn.mongodb.net/hv-customer-records?retryWrites=true&w=majority",
+    "mongodb+srv://AG:LpcXQEgJmncjovS1@cluster0.vqlxn.mongodb.net/hv-customer-records?retryWrites=true&w=majority",
     { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
   )
   .then(() => {

@@ -24,9 +24,7 @@ export class CustomersListComponent implements OnInit {
     this.formGroup = CustomersFilterComponent.createFormGroup(this.formBuilder);
   }
 
-  get customers() {
-    return;
-  }
+
   ngOnInit() {
     this.svc.getCustomers().subscribe((response) => {
       this.customersData = response as Customer[];

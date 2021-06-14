@@ -13,9 +13,8 @@ exports.getCustomer = (req, res, next) => {
   Customer.findById(req.params.id, (error, data) => {
     if (error) {
       return next(error);
-    } else {
-      res.json(data);
     }
+    res.json(data);
   });
 };
 
@@ -29,11 +28,9 @@ exports.createCustomer = (req, res, next) => {
 };
 
 exports.updateCustomer = (req, res, next) => {
-  Customer.findByIdAndUpdate(
-    req.params.id,
-    {
-      $set: req.body,
-    },
+  Customer.updateOne(
+    { _id: req.params.id },
+    { $set: req.body },
     (error, data) => {
       if (error) {
         return next(error);
@@ -45,7 +42,7 @@ exports.updateCustomer = (req, res, next) => {
 };
 
 exports.deleteCustomer = (req, res, next) => {
-  Customer.findByIdAndDelete(req.params.id, (error, data) => {
+  Customer.deleteOne({ _id: req.params.id }, (error, data) => {
     if (error) {
       return next(error);
     }

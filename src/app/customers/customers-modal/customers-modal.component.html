@@ -1,6 +1,8 @@
 <div style="background: white">
   <h2>Create</h2>
-
+  <button class="mat-raised-button mat-primary" (click)="delete()">
+    Delete
+  </button>
   <table [formGroup]="formGroup">
     <tr>
       <th>
@@ -28,13 +30,6 @@
       </th>
       <td>
         <input type="text" class="form-group" formControlName="location" />
-      </td>
-
-      <th>
-        <label>Phone</label>
-      </th>
-      <td>
-        <input type="text" class="form-group" formControlName="phone" />
       </td>
     </tr>
     <tr>
@@ -86,21 +81,40 @@
         />
       </td>
     </tr>
-    <!-- <label>Email</label>
-    <div 
-    *ngFor="let email of emailsArrayControl; let i = index"
-    [formGroupName]="i" 
-    >
-    <input>
-      <pre>{{email.value}}</pre>
-    </div> -->
+    <button (click)="addEmptyField(formGroup.controls.email)">add email</button>
+    <tr>
+      <th>Emails</th>
+      <td>
+        <app-text-inputs
+          [inputFormArray]="formGroup.controls.email"
+        ></app-text-inputs>
+      </td>
+    </tr>
+    <button (click)="addEmptyField(formGroup.controls.phone)">add phone</button>
+    <tr>
+      <th>Phone</th>
+      <td>
+        <app-text-inputs
+          [inputFormArray]="formGroup.controls.phone"
+        ></app-text-inputs>
+      </td>
+    </tr>
   </table>
   <div>
     <button class="mat-raised-button" (click)="close()">Close</button>
-    <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
-    <button class="mat-raised-button mat-primary" (click)="delete()">
-      Delete
+    <button
+      *ngIf="!formGroup.value.customerId"
+      class="mat-raised-button mat-primary"
+      (click)="save()"
+    >
+      Save
     </button>
-    <button class="mat-raised-button mat-primary" (click)="edit()">Edit</button>
+    <button
+      *ngIf="formGroup.value.customerId"
+      class="mat-raised-button mat-primary"
+      (click)="edit()"
+    >
+      Edit
+    </button>
   </div>
 </div>

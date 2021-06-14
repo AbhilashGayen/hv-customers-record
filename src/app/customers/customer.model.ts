@@ -3,7 +3,7 @@ export interface Customer {
   name?: string;
   location?: string;
   email?: string[];
-  phone?: string;
+  phone?: string[];
   contactPerson?: string;
   contactRole?: string;
   internalComment?: string;

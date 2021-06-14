@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TextInputsComponent } from '../text-inputs/text-inputs.component';
 import { Customer } from '../customer.model';
 import { CustomersService } from '../customers.service';
 
@@ -21,17 +22,19 @@ export class CustomersModalComponent implements OnInit {
     this.customer = data?.customer || {};
   }
 
-  get emailsArrayControl() {
-    return (this.formGroup.get('email') as FormArray).controls;
-  }
-
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
       customerId: this.customer._id,
       name: this.customer.name,
       location: this.customer.location,
-      email: this.formBuilder.array([this.customer.email]),
-      phone: this.customer.phone,
+      email: TextInputsComponent.createFormArray(
+        this.formBuilder,
+        this.customer.email
+      ),
+      phone: TextInputsComponent.createFormArray(
+        this.formBuilder,
+        this.customer.phone
+      ),
       contactPerson: this.customer.contactPerson,
       contactRole: this.customer.contactRole,
       internalComment: this.customer.internalComment,
@@ -46,7 +49,9 @@ export class CustomersModalComponent implements OnInit {
   }
 
   save() {
-    this.svc.createCustomer(this.formGroup.value).subscribe(
+    const value: CustomerDialogueFormModel = this.formGroup.value;
+    const customer = CustomersModalComponent.toCustomer(value);
+    this.svc.createCustomer(customer).subscribe(
       (res) => {
         console.log('Customer successfully created!');
         this.dialogRef.close(this.formGroup.value);
@@ -58,8 +63,9 @@ export class CustomersModalComponent implements OnInit {
   }
 
   edit() {
-    const id = this.formGroup.value.customerId;
-    this.svc.updateCustomer(id, this.formGroup.value).subscribe(
+    const value = this.formGroup.value;
+    const customer = CustomersModalComponent.toCustomer(value);
+    this.svc.updateCustomer(customer._id, customer).subscribe(
       (res) => {
         console.log('Content updated successfully!');
         this.dialogRef.close(this.formGroup.value);
@@ -75,6 +81,26 @@ export class CustomersModalComponent implements OnInit {
     this.svc.deleteCustomer(id).subscribe(() => {
       this.dialogRef.close();
     });
+  }
+
+  addEmptyField(formArray: any) {
+    TextInputsComponent.addEmptyRow(this.formBuilder, formArray as FormArray);
+  }
+
+  static toCustomer(value: CustomerDialogueFormModel) {
+    return {
+      _id: value.customerId,
+      name: value.name,
+      location: value.location,
+      email: TextInputsComponent.save(value.email),
+      phone: TextInputsComponent.save(value.phone),
+      contactPerson: value.contactPerson,
+      contactRole: value.contactRole,
+      internalComment: value.internalComment,
+      internalRepresentative: value.internalRepresentative,
+      priority: value.priority,
+      isMailSent: value.isMailSent,
+    };
   }
 }
 
