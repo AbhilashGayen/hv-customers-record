@@ -41,7 +41,7 @@ export class CustomersSorterService {
   static readonly sortByValues = {
     name: (i: Customer) => i.name || 'xxx',
     location: (i: Customer) => i.location || 'xxx',
-    priority: (i: Customer) => [i.priority, i.name].join('_') || 'xxx',
+    priority: (i: Customer) => [i.priority, i.name].join('_'),
   };
 }
 
