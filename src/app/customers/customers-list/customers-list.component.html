@@ -1,4 +1,8 @@
 <div class="sidenav d-flex align-items-end flex-column bd-highlight mb-3">
+  <div class="mb-1">
+    <img src="../../../assets/images/hitechlogo.png" class="img-fluid" alt="...">
+  </div>
+  <hr>
   <app-customers-filter [formGroup]="formGroup"></app-customers-filter>
   <hr />
   <button
@@ -51,21 +55,27 @@
           </span>
         </td>
         <td>
-          <a (click)="openDialog(action.edit, customer)">{{ customer.name }}</a>
+          <a appBlockCopyPaste (click)="openDialog(action.edit, customer)">{{
+            customer.name
+          }}</a>
         </td>
-        <td>{{ customer.location }}</td>
-        <td>
+        <td appBlockCopyPaste>{{ customer.location }}</td>
+        <td appBlockCopyPaste>
           <div class="text-truncate" *ngFor="let email of customer.email">
             {{ email }}
           </div>
         </td>
-        <td>
+        <td appBlockCopyPaste>
           <div class="text-truncate" *ngFor="let phone of customer.phone">
             {{ phone }}
           </div>
         </td>
-        <td>{{ customer.contactPerson }}</td>
-        <td>
+        <td appBlockCopyPaste>
+          <div *ngFor="let contactPerson of customer.contactPerson">
+            {{ contactPerson }}
+          </div>
+        </td>
+        <td appBlockCopyPaste>
           <i
             *ngIf="customer.internalComment"
             matTooltipPosition="above"

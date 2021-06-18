@@ -17,6 +17,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BlockCopyPasteDirective } from '../directives/block-copy-paste.directive';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CustomersComponentFilterPipe,
     TextInputsComponent,
     ExcelImportComponent,
+    BlockCopyPasteDirective
   ],
   imports: [
     CommonModule,
@@ -34,13 +36,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    MatTableModule,
     MatTooltipModule,
   ],
   entryComponents: [CustomersModalComponent],

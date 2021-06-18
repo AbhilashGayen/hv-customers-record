@@ -9,15 +9,17 @@
       class="form-control"
       formControlName="name"
       [readonly]="readOnly"
+      appBlockCopyPaste
     />
   </div>
   <div class="col-md-3">
-    <label for="" class="form-label">Customer Code</label>
+    <label for="" class="form-label">Vendor Code</label>
     <input
       type="text"
       class="form-control"
       formControlName="code"
       [readonly]="readOnly"
+      appBlockCopyPaste
     />
   </div>
   <div class="col-md-3">
@@ -54,6 +56,7 @@
       class="form-control"
       formControlName="location"
       [readonly]="readOnly"
+      appBlockCopyPaste
     />
   </div>
   <div class="col-md-4">
@@ -63,6 +66,7 @@
       class="form-control"
       formControlName="contactRole"
       [readonly]="readOnly"
+      appBlockCopyPaste
     />
   </div>
   <div class="col-md-4">
@@ -72,6 +76,7 @@
       class="form-control"
       formControlName="internalRepresentative"
       [readonly]="readOnly"
+      appBlockCopyPaste
     />
   </div>
   <div class="col-md-4">
@@ -132,6 +137,7 @@
       formControlName="internalComment"
       rows="2"
       [readonly]="readOnly"
+      appBlockCopyPaste
     ></textarea>
   </div>
   <div class="col-md-4">
