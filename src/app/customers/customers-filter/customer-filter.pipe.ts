@@ -1,12 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Customer } from '../customer.model';
-import {
-  CustomersFilterComponent,
-  CustomersFilterModel,
-} from './customers-filter.component';
+import { CustomersFilterModel, Priority } from './customers-filter.component';
 
 @Pipe({
-  name: 'customersComponentFilter',
+  name: 'customersFilter',
 })
 export class CustomersComponentFilterPipe implements PipeTransform {
   transform(customers: Customer[], filter: CustomersFilterModel): any[] {
@@ -50,14 +47,28 @@ class CustomerFilter extends ComplexFilter<Customer> {
   constructor(filter: CustomersFilterModel) {
     super();
     this.add(CustomerFilter.createNameFilter(filter.name));
+    this.add(CustomerFilter.createPriorityFilter(filter));
   }
 
   static createNameFilter(filterName: string) {
     return NameFilter.create<Customer>(filterName, (customer) => {
       if (!customer.$searchName) {
-        customer.$searchName = [customer.name, customer.phone].join('--');
+        customer.$searchName = [
+          customer.name,
+          customer.phone,
+          customer.email,
+          customer.contactPerson,
+          customer.internalRepresentative,
+        ].join('--');
       }
       return customer.$searchName;
     });
+  }
+
+  static createPriorityFilter(filter: CustomersFilterModel) {
+    if (filter.priority == 0) {
+      return (customer: Customer) => !!customer;
+    }
+    return (customer: Customer) => customer.priority == filter.priority;
   }
 }

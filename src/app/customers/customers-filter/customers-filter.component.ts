@@ -8,6 +8,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class CustomersFilterComponent implements OnInit {
   @Input() formGroup: FormGroup;
 
+  readonly priority = Priority;
+
   static emptyModel: CustomersFilterModel = {
     name: '',
     location: '',
@@ -16,6 +18,7 @@ export class CustomersFilterComponent implements OnInit {
     internalComment: '',
     internalRepresentative: '',
     isMailSent: false,
+    priority: 0,
   };
 
   static createFormGroup(formBuilder: FormBuilder) {
@@ -27,6 +30,7 @@ export class CustomersFilterComponent implements OnInit {
       internalComment: '',
       internalRepresentative: '',
       isMailSent: false,
+      priority: 0,
     });
     return formGroup;
   }
@@ -38,10 +42,19 @@ export class CustomersFilterComponent implements OnInit {
 
 export interface CustomersFilterModel {
   name: string;
+  priority: Priority;
   location: string;
   phone: string;
   contactPerson: string;
   internalComment: string;
   internalRepresentative: string;
   isMailSent: boolean;
+}
+
+export enum Priority {
+  Undefined = 0,
+  Immediate = 1,
+  NotImmediate = 2,
+  NotInterested = 3,
+  NoResponse = 4,
 }
