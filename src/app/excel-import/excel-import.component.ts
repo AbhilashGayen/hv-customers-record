@@ -11,7 +11,7 @@ import { CustomersService } from '../customers/customers.service';
 export class ExcelImportComponent implements OnInit {
   file: File = new File([''], '.xlsx');
   excelData: Customer[];
-  showUploadFile: boolean = true;
+  showUploadButton: boolean = false;
 
   constructor(private customersSvc: CustomersService) {}
 
@@ -21,6 +21,10 @@ export class ExcelImportComponent implements OnInit {
 
   incomingfile(event: any) {
     this.file = event.target.files[0];
+  }
+
+  showButton(value: boolean) {
+    this.showUploadButton = value;
   }
 
   Upload() {
@@ -40,14 +44,14 @@ export class ExcelImportComponent implements OnInit {
       this.excelData = json.map(
         (item: any) =>
           <Customer>{
-            name: item['Company Name'],
+            name: item['Company Name']?.toString() || '*********ENTER NAME********',
             location: item['Location'],
             email: item['E Mail Id']
               ?.toString()
               .replace(/\r?\n|\r/, '')
               .split(','),
             phone: item['Contact No']?.toString().split(','),
-            contactPerson: item['Name'],
+            contactPerson: item['Name']?.toString().split(','),
             contactRole: item['Role'],
             internalComment: item['Remarks']?.toString(),
             priority:
@@ -60,11 +64,11 @@ export class ExcelImportComponent implements OnInit {
                 : item['Priority'] == 'D'
                 ? 4
                 : 0,
-            isMailSent: item['Mail Sent'] == 'yes' ? true : false,
+            isMailSent: item['Mail Sent']?.toString() == 'Yes' ? true : false,
           }
       );
       if (this.excelData.length > 0) {
-        this.showUploadFile = false;
+        this.showUploadButton = false;
       }
       const excelData = this.excelData.map((a) => a);
 

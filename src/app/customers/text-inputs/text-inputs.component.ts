@@ -7,6 +7,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class TextInputsComponent {
   @Input() public inputFormArray: any;
+  @Input() public readOnly: boolean;
 
   static createFormArray(formBuilder: FormBuilder, data: string[] = []) {
     const formArray: FormArray = formBuilder.array(
@@ -30,7 +31,6 @@ export class TextInputsComponent {
   }
 
   static save(data: any) {
-    debugger;
     return data.filter((d: any) => d.value).map((d: any) => d.value);
   }
 

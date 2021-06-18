@@ -1,72 +1,87 @@
-<div class="container">
-  <div class="row">
-    <div class="col-2">
-      <app-customers-filter [formGroup]="formGroup"></app-customers-filter>
-      <hr />
-      <button type="button" (click)="openDialog()">Launch modal</button>
-      <hr/>
-      <app-excel-import></app-excel-import>
-    </div>
-    <div class="col-10">
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th style="width: 3%">P</th>
-            <th style="width: 22%">Name</th>
-            <th style="width: 10%">Location</th>
-            <th style="width: 27%">Email</th>
-            <th style="width: 12%">Phone</th>
-            <th style="width: 12%">C. Person</th>
-            <th style="width: 8%">misc.</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="
-              let customer of customersData
-                | customersComponentFilter: formGroup.value
-            "
-          >
-            <td>
-              <span [ngSwitch]="customer.priority">
-                <i *ngSwitchCase="1" class="bi bi-chevron-double-up"></i>
-                <i *ngSwitchCase="2" class="bi bi-chevron-up"></i>
-                <i *ngSwitchCase="3" class="bi bi-slash-square"></i>
-                <i *ngSwitchCase="4" class="bi bi-exclamation-circle-fill"></i>
-                <span *ngSwitchDefault></span>
-              </span>
-            </td>
-            <td>
-              <a (click)="openDialog(customer)">{{ customer.name }}</a>
-            </td>
-            <td>{{ customer.location }}</td>
-            <td>
-              <div class="text-truncate" *ngFor="let email of customer.email">
-                {{ email }}
-              </div>
-            </td>
-            <td>
-              <div class="text-truncate" *ngFor="let phone of customer.phone">
-                {{ phone }}
-              </div>
-            </td>
-            <td>{{ customer.contactPerson }}</td>
-            <td>
-              <i
-                *ngIf="customer.internalComment"
-                class="bi bi-chat"
-                title="{{ customer.internalComment }}"
-              ></i>
-              &nbsp;
-              <i
-                *ngIf="customer.isMailSent"
-                class="bi bi-envelope"
-                title="Email sent"
-              ></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<div class="sidenav d-flex align-items-end flex-column bd-highlight mb-3">
+  <app-customers-filter [formGroup]="formGroup"></app-customers-filter>
+  <hr />
+  <button
+    type="button"
+    class="btn btn-outline-primary btn-sm px-3 my-3 mx-auto"
+    (click)="openDialog(action.new)"
+  >
+    New customer
+  </button>
+  <div class="mt-auto mx-auto">
+    <app-excel-import></app-excel-import>
   </div>
+</div>
+
+<!-- Page content -->
+<div class="main">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th style="width: 3%">
+          <a (click)="sortBy('priority')">
+            <i class="bi bi-arrow-down-up"></i>
+          </a>
+        </th>
+        <th style="width: 22%">
+          <a (click)="sortBy('name')"> Name</a>
+        </th>
+        <th style="width: 10%">
+          <a (click)="sortBy('location')">Location</a>
+        </th>
+        <th style="width: 20%">Email</th>
+        <th style="width: 12%">Phone</th>
+        <th style="width: 12%">C. Person</th>
+        <th style="width: 15%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let customer of customersData | customersFilter: formGroup.value
+        "
+      >
+        <td>
+          <span [ngSwitch]="customer.priority">
+            <i *ngSwitchCase="1" class="bi bi-chevron-double-up"></i>
+            <i *ngSwitchCase="2" class="bi bi-chevron-up"></i>
+            <i *ngSwitchCase="3" class="bi bi-dash-circle-dotted"></i>
+            <i *ngSwitchCase="4" class="bi bi-telephone-x"></i>
+            <span *ngSwitchDefault></span>
+          </span>
+        </td>
+        <td>
+          <a (click)="openDialog(action.edit, customer)">{{ customer.name }}</a>
+        </td>
+        <td>{{ customer.location }}</td>
+        <td>
+          <div class="text-truncate" *ngFor="let email of customer.email">
+            {{ email }}
+          </div>
+        </td>
+        <td>
+          <div class="text-truncate" *ngFor="let phone of customer.phone">
+            {{ phone }}
+          </div>
+        </td>
+        <td>{{ customer.contactPerson }}</td>
+        <td>
+          <i
+            *ngIf="customer.internalComment"
+            matTooltipPosition="above"
+            [matTooltip]="customer.internalComment"
+            class="bi bi-chat"
+          ></i>
+          &nbsp;
+          <i
+            *ngIf="customer.isMailSent"
+            matTooltipPosition="above"
+            matTooltip="Email sent"
+            class="bi bi-envelope"
+            title="Email sent"
+          ></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

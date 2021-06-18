@@ -11,6 +11,12 @@ import { CustomersFilterComponent } from './customers-filter/customers-filter.co
 import { CustomersListComponent } from './customers-list/customers-list.component';
 import { CustomersModalComponent } from './customers-modal/customers-modal.component';
 import { ExcelImportComponent } from '../excel-import/excel-import.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -20,7 +26,7 @@ import { ExcelImportComponent } from '../excel-import/excel-import.component';
     CustomersFilterComponent,
     CustomersComponentFilterPipe,
     TextInputsComponent,
-    ExcelImportComponent
+    ExcelImportComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +36,12 @@ import { ExcelImportComponent } from '../excel-import/excel-import.component';
     MatDialogModule,
     MatInputModule,
     MatFormFieldModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatTooltipModule,
   ],
   entryComponents: [CustomersModalComponent],
 })

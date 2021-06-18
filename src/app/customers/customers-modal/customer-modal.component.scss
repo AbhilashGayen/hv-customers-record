@@ -1,0 +1,13 @@
+.form-label {
+  margin-bottom: 0.1rem;
+}
+
+input.ng-invalid {
+  border-color: #ffc107cb;
+}
+
+input.ng-invalid:focus {
+  outline: none;
+  border-color: #ffc107cb;
+  box-shadow: 0 0 10px #ffc107;
+}

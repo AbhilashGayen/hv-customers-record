@@ -1,120 +1,201 @@
-<div style="background: white">
-  <h2>Create</h2>
-  <button class="mat-raised-button mat-primary" (click)="delete()">
-    Delete
-  </button>
-  <table [formGroup]="formGroup">
-    <tr>
-      <th>
-        <label>Company</label>
-      </th>
-      <td>
-        <input type="text" class="form-group" formControlName="name" />
-      </td>
-      <th>
-        <label>Prityori</label>
-      </th>
-      <td>
-        <select name="priority" class="form-group" formControlName="priority">
-          <option value="0"></option>
-          <option value="1">Interested, Immediate</option>
-          <option value="2">Interested, Not Immediate</option>
-          <option value="3">Not interested</option>
-          <option value="4">No response</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <label>Location</label>
-      </th>
-      <td>
-        <input type="text" class="form-group" formControlName="location" />
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <label>contactPerson</label>
-      </th>
-      <td>
-        <input type="text" class="form-group" formControlName="contactPerson" />
-      </td>
-
-      <th>
-        <label>contactRole</label>
-      </th>
-      <td>
-        <input type="text" class="form-group" formControlName="contactRole" />
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <label>internalRepresentative</label>
-      </th>
-      <td>
-        <input
-          type="text    </tr>"
-          class="form-group"
-          formControlName="internalRepresentative"
-        />
-      </td>
-      <th>
-        <label>internalComment</label>
-      </th>
-      <td>
-        <textarea
-          class="form-group"
-          formControlName="internalComment"
-        ></textarea>
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <label>isEmailSent</label>
-      </th>
-      <td>
-        <input
-          type="checkbox"
-          class="form-group"
-          formControlName="isMailSent"
-          value="1"
-        />
-      </td>
-    </tr>
-    <button (click)="addEmptyField(formGroup.controls.email)">add email</button>
-    <tr>
-      <th>Emails</th>
-      <td>
-        <app-text-inputs
-          [inputFormArray]="formGroup.controls.email"
-        ></app-text-inputs>
-      </td>
-    </tr>
-    <button (click)="addEmptyField(formGroup.controls.phone)">add phone</button>
-    <tr>
-      <th>Phone</th>
-      <td>
-        <app-text-inputs
-          [inputFormArray]="formGroup.controls.phone"
-        ></app-text-inputs>
-      </td>
-    </tr>
-  </table>
-  <div>
-    <button class="mat-raised-button" (click)="close()">Close</button>
-    <button
-      *ngIf="!formGroup.value.customerId"
-      class="mat-raised-button mat-primary"
-      (click)="save()"
-    >
-      Save
-    </button>
-    <button
-      *ngIf="formGroup.value.customerId"
-      class="mat-raised-button mat-primary"
-      (click)="edit()"
-    >
+<form class="row g-3" [formGroup]="formGroup">
+  <div class="col-md-12">
+    <h1>Create</h1>
+  </div>
+  <div class="col-md-6">
+    <label for="" class="form-label">Customer Name</label>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="name"
+      [readonly]="readOnly"
+    />
+  </div>
+  <div class="col-md-3">
+    <label for="" class="form-label">Customer Code</label>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="code"
+      [readonly]="readOnly"
+    />
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Priority</label>
+    <div class="input-group">
+      <select
+        class="form-select"
+        formControlName="priority"
+        [attr.disabled]="readOnly || undefined"
+      >
+        <option value="0"></option>
+        <option value="1">Interested, Immediate</option>
+        <option value="2">Interested, Not Immediate</option>
+        <option value="3">Not interested</option>
+        <option value="4">No response</option>
+      </select>
+      <span class="input-group-text" [ngSwitch]="formGroup.value.priority">
+        <i *ngSwitchCase="1" class="bi bi-chevron-double-up"></i>
+        <i *ngSwitchCase="2" class="bi bi-chevron-up"></i>
+        <i *ngSwitchCase="3" class="bi bi-dash-circle-dotted"></i>
+        <i *ngSwitchCase="4" class="bi bi-telephone-x"></i>
+        <i
+          *ngSwitchDefault
+          class="bi bi-bug"
+          style="color: transparent !important"
+        ></i>
+      </span>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="" class="form-label">Location</label>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="location"
+      [readonly]="readOnly"
+    />
+  </div>
+  <div class="col-md-4">
+    <label for="" class="form-label">Contact Role</label>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="contactRole"
+      [readonly]="readOnly"
+    />
+  </div>
+  <div class="col-md-4">
+    <label for="" class="form-label">Internal Representative</label>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="internalRepresentative"
+      [readonly]="readOnly"
+    />
+  </div>
+  <div class="col-md-4">
+    <label for="" class="form-label">Email</label>
+    <app-text-inputs
+      [inputFormArray]="formGroup.controls.email"
+      [readOnly]="readOnly"
+    ></app-text-inputs>
+    <div class="d-grid d-md-flex justify-content-md-end">
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm py-0 px-2 float-right"
+        (click)="addEmptyField(formGroup.controls.email)"
+        [hidden]="readOnly"
+      >
+        <i class="bi bi-plus py-0 px-1"></i>
+      </button>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="" class="form-label">Phone</label>
+    <app-text-inputs
+      [inputFormArray]="formGroup.controls.phone"
+      [readOnly]="readOnly"
+    ></app-text-inputs>
+    <div class="d-grid d-md-flex justify-content-md-end">
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm py-0 px-2 float-right"
+        (click)="addEmptyField(formGroup.controls.phone)"
+        [hidden]="readOnly"
+      >
+        <i class="bi bi-plus py-0 px-1"></i>
+      </button>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="" class="form-label">Contact Person</label>
+    <app-text-inputs
+      [inputFormArray]="formGroup.controls.contactPerson"
+      [readOnly]="readOnly"
+    ></app-text-inputs>
+    <div class="d-grid d-md-flex justify-content-md-end">
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm py-0 px-2 float-right"
+        (click)="addEmptyField(formGroup.controls.contactPerson)"
+        [hidden]="readOnly"
+      >
+        <i class="bi bi-plus py-0 px-1"></i>
+      </button>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="inputAddress" class="form-label">Internal Comment</label>
+    <textarea
+      class="form-control"
+      formControlName="internalComment"
+      rows="2"
+      [readonly]="readOnly"
+    ></textarea>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Options</label>
+    <div class="form-check">
+      <input
+        [attr.disabled]="readOnly || undefined"
+        class="form-check-input"
+        type="checkbox"
+        id="gridCheck"
+        formControlName="isMailSent"
+      />
+      <label class="form-check-label" for="gridCheck"> Email sent </label>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end" *ngIf="readOnly">
+    <button class="btn me-md-2" type="button" (click)="close()">Close</button>
+    <button class="btn btn-success px-3" type="button" (click)="enableForm()">
       Edit
     </button>
   </div>
-</div>
+  <div class="d-grid gap-2 d-md-flex justify-content-between" *ngIf="!readOnly">
+    <div>
+      <ng-container *ngIf="!deleteConfirmation">
+        <button
+          class="btn btn-outline-danger"
+          type="button"
+          (click)="delete(true)"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
+      </ng-container>
+      <ng-container *ngIf="deleteConfirmation">
+        <button class="btn me-md-2" type="button" (click)="delete(false)">
+          Cancel
+        </button>
+        <button
+          class="btn btn-danger px-3"
+          type="button"
+          (click)="confirmDelete()"
+        >
+          Delete
+        </button>
+      </ng-container>
+    </div>
+    <div>
+      <button class="btn me-md-2" type="button" (click)="close()">Close</button>
+      <button
+        [disabled]="!formGroup.valid"
+        *ngIf="!formGroup.value.customerId"
+        class="btn btn-success px-3"
+        type="button"
+        (click)="save()"
+      >
+        Save
+      </button>
+      <button
+        *ngIf="formGroup.value.customerId"
+        class="btn btn-primary px-3"
+        type="button"
+        (click)="edit()"
+      >
+        Update
+      </button>
+    </div>
+  </div>
+</form>

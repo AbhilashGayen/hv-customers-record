@@ -2,5 +2,11 @@
   *ngFor="let formGroup of inputFormArray.controls; let i = index"
   [formGroup]="formGroup"
 >
-  <input type="text" formControlName="value" />
+  <input
+    type="text"
+    class="form-control"
+    formControlName="value"
+    style="margin-bottom: 4px"
+    [readonly]="readOnly"
+  />
 </ng-container>

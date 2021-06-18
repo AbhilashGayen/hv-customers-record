@@ -1,4 +1,25 @@
-<div [formGroup]="formGroup">
-    <label>Customer Name</label>
-    <input type="text" class="form-control" formControlName="name"/>
+<div class="" [formGroup]="formGroup">
+  <label for="name">Filter</label>
+  <div class="input-group input-group-sm mb-3">
+    <input
+      type="text"
+      class="form-control"
+      aria-label="Filter"
+      aria-describedby="inputGroup-sizing-default"
+      formControlName="name"
+    />
+  </div>
+  <div class="input-group input-group-sm mb-3">
+    <select
+      class="form-select form-select-sm"
+      aria-label=".form-select-sm example"
+      formControlName="priority"
+    >
+      <option [value]="priority.Undefined"></option>
+      <option [value]="priority.Immediate">Interested, Immediate</option>
+      <option [value]="priority.NotImmediate">Interested, Not immediate</option>
+      <option [value]="priority.NotInterested">Not interested</option>
+      <option [value]="priority.NoResponse">No response</option>
+    </select>
+  </div>
 </div>
