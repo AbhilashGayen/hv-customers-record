@@ -1,0 +1,48 @@
+<div class="position-absolute top-50 start-50 translate-middle">
+  <div class="container">
+    <div class="card" style="width: 24rem">
+      <div class="card-body" [formGroup]="formGroup">
+        <img
+          src="../../../assets/images/hitechlogo.png"
+          class="img-fluid mb-2"
+          alt="HiTech Valves"
+          style="width: 10rem"
+        />
+        <h2 class="card-subtitle mb-2 text-muted">Signup</h2>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">
+            <i class="bi bi-person"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Username"
+            aria-label="Username"
+            formControlName="username"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">
+            <i class="bi bi-key"></i>
+          </span>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            aria-label="Password"
+            formControlName="password"
+          />
+        </div>
+        <div class="d-grid d-md-flex justify-content-md-end">
+          <button
+            class="btn btn-outline-primary"
+            type="submit"
+            (click)="onSignup()"
+          >
+            Signup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
