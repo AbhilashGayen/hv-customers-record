@@ -153,11 +153,27 @@
       <label class="form-check-label" for="gridCheck"> Email sent </label>
     </div>
   </div>
-  <div class="d-flex justify-content-end" *ngIf="readOnly">
-    <button class="btn me-md-2" type="button" (click)="close()">Close</button>
-    <button class="btn btn-success px-3" type="button" (click)="enableForm()">
-      Edit
-    </button>
+  <div
+    class="d-flex justify-content-between"
+    style="font-size: 10px; color: grey"
+    *ngIf="readOnly"
+  >
+    <div>
+      <div>
+        <label>lastEditedBy:</label>
+        <span>{{ formGroup.value.editedBy }}</span>
+      </div>
+      <div>
+        <label>lastEditedTime:</label>
+        <span>{{ formGroup.value.editedTime | date: "dd-MMM-yy HH:mm" }}</span>
+      </div>
+    </div>
+    <div>
+      <button class="btn me-md-2" type="button" (click)="close()">Close</button>
+      <button class="btn btn-success px-3" type="button" (click)="enableForm()">
+        Edit
+      </button>
+    </div>
   </div>
   <div class="d-grid gap-2 d-md-flex justify-content-between" *ngIf="!readOnly">
     <div>
@@ -166,6 +182,7 @@
           class="btn btn-outline-danger"
           type="button"
           (click)="delete(true)"
+          *ngIf="formGroup.value.customerId"
         >
           <i class="bi bi-trash"></i>
         </button>

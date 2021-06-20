@@ -15,6 +15,14 @@ const customerSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  lastEdit: {
+    by: {
+      type: String,
+    },
+    time: {
+      type: String,
+    },
+  },
 });
 
 module.exports = mongoose.model("Customer", customerSchema);

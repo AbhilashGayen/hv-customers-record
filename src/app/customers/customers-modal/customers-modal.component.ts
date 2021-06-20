@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TextInputsComponent } from '../text-inputs/text-inputs.component';
 import { Customer } from '../customer.model';
 import { CustomersService } from '../customers.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-customers-modal',
@@ -15,9 +16,11 @@ export class CustomersModalComponent implements OnInit {
   customer: Customer;
   deleteConfirmation: boolean = false;
   readOnly: any;
+  username: any;
 
   constructor(
     private svc: CustomersService,
+    private authSvc: AuthService,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<CustomersModalComponent>,
     @Inject(MAT_DIALOG_DATA) data: any
@@ -27,6 +30,10 @@ export class CustomersModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authSvc.getUserDetails().subscribe((r) => {
+      this.username = r.username;
+    });
+
     this.formGroup = this.formBuilder.group({
       customerId: this.customer._id,
       name: [this.customer.name, Validators.required],
@@ -49,6 +56,8 @@ export class CustomersModalComponent implements OnInit {
       internalRepresentative: this.customer.internalRepresentative,
       priority: this.customer.priority,
       isMailSent: this.customer.isMailSent,
+      editedBy: this.customer.lastEdit?.by,
+      editedTime: this.customer.lastEdit?.time,
     });
   }
 
@@ -64,7 +73,7 @@ export class CustomersModalComponent implements OnInit {
     if (!this.formGroup.valid) return;
 
     const value: CustomerDialogueFormModel = this.formGroup.value;
-    const customer = CustomersModalComponent.toCustomer(value);
+    const customer = CustomersModalComponent.toCustomer(value, this.username!);
     this.svc.createCustomer(customer).subscribe(
       (res) => {
         console.log('Customer successfully created!');
@@ -80,8 +89,8 @@ export class CustomersModalComponent implements OnInit {
     if (!this.formGroup.valid) return;
 
     const value = this.formGroup.value;
-    const customer = CustomersModalComponent.toCustomer(value);
-    this.svc.updateCustomer(customer._id, customer).subscribe(
+    const customer = CustomersModalComponent.toCustomer(value, this.username!);
+    this.svc.updateCustomer(customer._id!, customer).subscribe(
       (res) => {
         console.log('Content updated successfully!');
         this.dialogRef.close(this.formGroup.value);
@@ -107,7 +116,10 @@ export class CustomersModalComponent implements OnInit {
     TextInputsComponent.addEmptyRow(this.formBuilder, formArray as FormArray);
   }
 
-  static toCustomer(value: CustomerDialogueFormModel) {
+  static toCustomer(
+    value: CustomerDialogueFormModel,
+    username: string = ''
+  ): Customer {
     return {
       _id: value.customerId,
       code: value.code,
@@ -121,6 +133,10 @@ export class CustomersModalComponent implements OnInit {
       internalRepresentative: value.internalRepresentative,
       priority: value.priority,
       isMailSent: value.isMailSent,
+      lastEdit: {
+        by: username,
+        time: new Date().toISOString(),
+      },
     };
   }
 }

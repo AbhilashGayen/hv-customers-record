@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AuthService } from 'src/app/auth/auth.service';
 import {
   CustomerSorterValueName,
   CustomersSorterService,
@@ -28,6 +29,7 @@ export class CustomersListComponent implements OnInit {
     private formBuilder: FormBuilder,
     private matDialog: MatDialog,
     private svc: CustomersService,
+    private authSvc: AuthService,
     private sorter: CustomersSorterService
   ) {
     this.formGroup = CustomersFilterComponent.createFormGroup(this.formBuilder);
@@ -67,6 +69,7 @@ export class CustomersListComponent implements OnInit {
           priority: customer.priority,
           isMailSent: customer.isMailSent,
           internalRepresentative: customer.internalRepresentative,
+          lastEdit: customer.lastEdit,
         },
         readOnly: readOnly,
       };
@@ -82,6 +85,10 @@ export class CustomersListComponent implements OnInit {
         this.customersData = this.sorter.sort(response as Customer[]);
       });
     });
+  }
+
+  onLogout() {
+    this.authSvc.logout();
   }
 }
 

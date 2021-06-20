@@ -1,8 +1,12 @@
 <div class="sidenav d-flex align-items-end flex-column bd-highlight mb-3">
   <div class="mb-1">
-    <img src="../../../assets/images/hitechlogo.png" class="img-fluid" alt="...">
+    <img
+      src="../../../assets/images/hitechlogo.png"
+      class="img-fluid"
+      alt="..."
+    />
   </div>
-  <hr>
+  <hr />
   <app-customers-filter [formGroup]="formGroup"></app-customers-filter>
   <hr />
   <button
@@ -15,6 +19,14 @@
   <div class="mt-auto mx-auto">
     <app-excel-import></app-excel-import>
   </div>
+  <hr />
+  <button
+    type="button"
+    class="btn btn-outline-secondary btn-sm mx-auto"
+    (click)="onLogout()"
+  >
+    Logout
+  </button>
 </div>
 
 <!-- Page content -->

@@ -11,5 +11,11 @@ export interface Customer {
   internalRepresentative?: string;
   priority?: number;
   isMailSent?: boolean;
+  lastEdit?: LastEdit;
   $searchName?: string;
+}
+
+interface LastEdit {
+  by?: string;
+  time?: string;
 }
