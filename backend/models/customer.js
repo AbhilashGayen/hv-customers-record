@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const customerSchema = mongoose.Schema({
   name: { type: String, required: true },
-  code: { type: String },
+  vendorCode: { type: String },
   location: { type: String },
   phone: { type: Array },
   email: { type: Array },
