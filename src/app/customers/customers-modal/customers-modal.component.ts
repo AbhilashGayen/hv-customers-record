@@ -37,7 +37,7 @@ export class CustomersModalComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       customerId: this.customer._id,
       name: [this.customer.name, Validators.required],
-      code: this.customer.code,
+      vendorCode: this.customer.vendorCode,
       location: this.customer.location,
       email: TextInputsComponent.createFormArray(
         this.formBuilder,
@@ -122,7 +122,7 @@ export class CustomersModalComponent implements OnInit {
   ): Customer {
     return {
       _id: value.customerId,
-      code: value.code,
+      vendorCode: value.vendorCode,
       name: value.name,
       location: value.location,
       email: TextInputsComponent.save(value.email),
@@ -144,7 +144,7 @@ export class CustomersModalComponent implements OnInit {
 interface CustomerDialogueFormModel {
   customerId: string;
   name: string;
-  code: string;
+  vendorCode: string;
   location: string;
   email: string[];
   phone: string;

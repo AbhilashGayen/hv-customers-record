@@ -36,6 +36,10 @@ export class CustomersListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getCustomers();
+  }
+
+  getCustomers() {
     this.svc.getCustomers().subscribe((response) => {
       this.customersData = this.sorter.sort(response as Customer[]);
     });
@@ -59,7 +63,7 @@ export class CustomersListComponent implements OnInit {
         customer: {
           _id: customer._id,
           name: customer.name,
-          code: customer.code,
+          vendorCode: customer.vendorCode,
           location: customer.location,
           email: customer.email,
           phone: customer.phone,

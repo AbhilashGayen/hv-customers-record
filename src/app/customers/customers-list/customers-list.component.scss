@@ -1,5 +1,14 @@
 .table {
   table-layout: fixed;
+  border-collapse: separate; /* Don't collapse */
+  border-spacing: 0;
+}
+
+thead tr th {
+  position: sticky; 
+  top: 0; 
+  background-color: white;
+  border-bottom: 1px solid;
 }
 
 a {

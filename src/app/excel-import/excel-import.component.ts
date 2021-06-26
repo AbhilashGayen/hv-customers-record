@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Customer } from '../customers/customer.model';
 import { CustomersService } from '../customers/customers.service';
@@ -12,6 +12,7 @@ export class ExcelImportComponent implements OnInit {
   file: File = new File([''], '.xlsx');
   excelData: Customer[];
   showUploadButton: boolean = false;
+  @Output() importExcelEvent = new EventEmitter<boolean>();
 
   constructor(private customersSvc: CustomersService) {}
 
@@ -44,7 +45,8 @@ export class ExcelImportComponent implements OnInit {
       this.excelData = json.map(
         (item: any) =>
           <Customer>{
-            name: item['Company Name']?.toString() || '*********ENTER NAME********',
+            name:
+              item['Company Name']?.toString() || '*********ENTER NAME********',
             location: item['Location'],
             email: item['E Mail Id']
               ?.toString()
@@ -65,24 +67,23 @@ export class ExcelImportComponent implements OnInit {
                 ? 4
                 : 0,
             isMailSent: item['Mail Sent']?.toString() == 'Yes' ? true : false,
+            vendorCode: item['Vendor Code']?.toString()
           }
       );
       if (this.excelData.length > 0) {
         this.showUploadButton = false;
       }
-      const excelData = this.excelData.map((a) => a);
-
-      excelData.forEach((row) => {
+      this.excelData.forEach((row) => {
         this.customersSvc.createCustomer(row).subscribe(
           (res) => {
             console.log('Customer successfully created!');
           },
           (error) => {
-            debugger;
             console.log(error);
           }
         );
       });
+      this.importExcelEvent.emit(true);
     };
     fileReader.readAsArrayBuffer(this.file);
   }

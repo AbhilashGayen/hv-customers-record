@@ -17,7 +17,8 @@
     New customer
   </button>
   <div class="mt-auto mx-auto">
-    <app-excel-import></app-excel-import>
+    <app-excel-import
+    (importExcelEvent)="getCustomers()"></app-excel-import>
   </div>
   <hr />
   <button
