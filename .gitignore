@@ -43,7 +43,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-backend
 src/environments
 nodemon.json
 angular.json
+backend/angular
