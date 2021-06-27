@@ -57,6 +57,7 @@ export class CustomersListComponent implements OnInit {
     dialogConfig.width = '70vw';
     dialogConfig.minHeight = '70vh';
     dialogConfig.maxHeight = '90vh';
+    dialogConfig.panelClass = 'unselectable';
 
     if (customer) {
       dialogConfig.data = {
@@ -84,7 +85,7 @@ export class CustomersListComponent implements OnInit {
       dialogConfig
     );
 
-    dialogRef.afterClosed().subscribe((data) => {
+    dialogRef.afterClosed().subscribe(() => {
       this.svc.getCustomers().subscribe((response) => {
         this.customersData = this.sorter.sort(response as Customer[]);
       });

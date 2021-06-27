@@ -60,6 +60,7 @@ class CustomerFilter extends ComplexFilter<Customer> {
           customer.contactPerson,
           customer.internalRepresentative,
           customer.location,
+          customer.vendorCode
         ].join('--');
       }
       return customer.$searchName;
