@@ -42,6 +42,7 @@ export class CustomersSorterService {
     name: (i: Customer) => i.name || 'xxx',
     location: (i: Customer) => i.location || 'xxx',
     priority: (i: Customer) => [i.priority, i.name].join('_'),
+    vendorCode: (i: Customer) => i.vendorCode,
   };
 }
 
